@@ -21,8 +21,6 @@ public:
 		bool operator!=(const iterator& rhs) { return false; }
 	};
 
-	typedef iterator return_type;
-
 	iterator begin()
 	{
 		return iterator(NULL);

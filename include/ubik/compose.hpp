@@ -1,4 +1,6 @@
 #pragma once
+#include <boost/mpl/assert.hpp>
+#include <boost/mpl/contains.hpp>
 #include <boost/mpl/inherit.hpp>
 #include <boost/mpl/inherit_linearly.hpp>
 
@@ -17,19 +19,21 @@ public:
 	template<class T>
 	typename T::return_type get()
 	{
-		// write this: BOOST_STATIC_ASSERT( T in TL );
-		return static_cast<T*>(this)->get();
+		BOOST_MPL_ASSERT( (mpl::contains<TL,T>) );
+		return T::get();
 	}
 
 	template<class T>
-	typename T::return_type begin()
+	typename T::iterator begin()
 	{
+		BOOST_MPL_ASSERT( (mpl::contains<TL,T>) );
 		return T::begin();
 	}
 
 	template<class T>
-	typename T::return_type end()
+	typename T::iterator end()
 	{
+		BOOST_MPL_ASSERT( (mpl::contains<TL,T>) );
 		return T::end();
 	}
 };
