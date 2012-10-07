@@ -1,6 +1,6 @@
 #pragma once
 #include <boost/mpl/vector.hpp>
-#include "compose.hpp"
+#include <ubik/compose.hpp>
 
 namespace ubik
 {
@@ -9,6 +9,7 @@ template<class T>
 class loop
 {
 public:
+	enum { bit_width = 0 };
 	class iterator : public compose<T>
 	{
 	public:

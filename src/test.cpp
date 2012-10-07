@@ -29,7 +29,8 @@ void foo(unsigned char* bytes)
 
 int main(int argc, char** argv)
 {
-	foo(NULL);
+	unsigned char data[] = { 1, 2, 3, 4 };
+	foo(data);
 	return 0;
 }
 
