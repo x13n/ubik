@@ -16,7 +16,7 @@ protected:
 	enum { bit_width = BitWidth };
 
 	template<unsigned bit_offset>
-	return_type get(unsigned byte_offset)
+	return_type get(unsigned byte_offset) const
 	{
 		return get_from_bits<return_type, bit_offset, bit_width>(byte_offset);
 	}

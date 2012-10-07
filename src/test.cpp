@@ -8,8 +8,14 @@ using namespace std;
 struct tag : public field<8, uint8_t> {};
 struct length : public field<8, uint8_t> {};
 struct someval : public field<16, uint16_t> {};
-// TODO: design a way to specify iteration end condition
-struct test_loop : public loop<boost::mpl::vector<someval> > {};
+struct test_loop : public loop<boost::mpl::vector<someval>, test_loop>
+{
+	template<class Context>
+	bool is_valid(unsigned char* addr, const Context& c)
+	{
+		return addr < begin(c)->bytes() + c.template get<length>();
+	}
+};
 
 typedef compose<boost::mpl::vector<tag, length, test_loop> > desc;
 
@@ -22,7 +28,7 @@ void foo(unsigned char* bytes)
 	cout << "len: " << (unsigned)l << endl;
 	for(test_loop::iterator it = d.begin<test_loop>(); it != d.end<test_loop>(); ++it)
 	{
-		uint16_t s = it.get<someval>();
+		uint16_t s = it->get<someval>();
 		cout << "someval: " << (unsigned)s << endl;
 	}
 }
