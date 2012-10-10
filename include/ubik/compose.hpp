@@ -14,6 +14,18 @@ namespace mpl = boost::mpl;
 template<class TL>
 class compose : public mpl::inherit_linearly<TL, mpl::inherit<mpl::_1, mpl::_2> >::type
 {
+private:
+	template<class T>
+	struct predecessors
+	{
+		BOOST_MPL_ASSERT( (mpl::contains<TL,T>) );
+		typedef typename mpl::erase<
+				TL,
+				typename mpl::find<TL, T>::type,
+				typename mpl::end<TL>::type
+			>::type type; // fields before T
+	};
+
 public:
 	compose(const unsigned char* bits)
 	{
@@ -23,22 +35,17 @@ public:
 	template<class T>
 	typename T::return_type get() const
 	{
-		BOOST_MPL_ASSERT( (mpl::contains<TL,T>) );
-		typedef typename mpl::erase<
-				TL,
-				typename mpl::find<TL, T>::type,
-				typename mpl::end<TL>::type
-			>::type preds; // fields before T
-		static const int idx = const_bit_width<preds>::value;
+		static const unsigned idx = const_bit_width<typename predecessors<T>::type>::value;
 		return T::template get<idx%8>(idx/8);
 	}
 
 	template<class T>
 	typename T::iterator begin() const
 	{
-		BOOST_MPL_ASSERT( (mpl::contains<TL,T>) );
-		// TODO: calculate pointer and pass it here
-		return T::begin(NULL);
+		static const unsigned idx = const_bit_width<typename predecessors<T>::type>::value;
+		assert(0 == idx%8);
+		const unsigned char* bytes = bit_accessor::get_bits() + idx/8;
+		return T::begin(bytes, *this);
 	}
 
 	template<class T>

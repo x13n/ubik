@@ -7,13 +7,13 @@ using namespace std;
 
 struct tag : public field<8, uint8_t> {};
 struct length : public field<8, uint8_t> {};
-struct someval : public field<16, uint16_t> {};
+struct someval : public field<8, uint16_t> {};
 struct test_loop : public loop<boost::mpl::vector<someval>, test_loop>
 {
 	template<class Context>
-	bool is_valid(unsigned char* addr, const Context& c)
+	unsigned get_size(const Context& c) const
 	{
-		return addr < begin(c)->bytes() + c.template get<length>();
+		return c.template get<length>();
 	}
 };
 

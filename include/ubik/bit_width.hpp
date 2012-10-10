@@ -36,7 +36,12 @@ namespace mpl = boost::mpl;
 	template<class T>
 	struct var_byte_width
 	{
-	
+	private:
+		static unsigned const const_bit_size = const_bit_width<T>::value;
+
+		BOOST_STATIC_ASSERT(0 == const_bit_size%8);
+	public:
+		static unsigned const value = const_bit_size/8 + 0;// TODO: variable size
 	};
 }
 

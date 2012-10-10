@@ -40,6 +40,11 @@ public:
 		m_bits = bits;
 	}
 
+	const unsigned char* get_bits() const
+	{
+		return m_bits;
+	}
+
 	template<class T, unsigned start_bit, unsigned num_bits>
 	T get_from_bits(unsigned byte_offset) const
 	{
