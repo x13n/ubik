@@ -11,7 +11,7 @@ template<class T, class Derived>
 class loop
 {
 public:
-	enum { bit_width = 0 }; // TODO: remove this?
+	enum { bit_width = 0 };
 	static const bool const_sized = false;
 
 	class iterator

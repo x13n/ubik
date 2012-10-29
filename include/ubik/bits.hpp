@@ -1,8 +1,8 @@
 #pragma once
-#include <stdint.h> // FIXME: not portable!
-#include <ubik/convert.hpp>
+#include <stdint.h>
 #include <boost/static_assert.hpp>
 #include <boost/mpl/if.hpp>
+#include <ubik/convert.hpp>
 
 namespace ubik
 {
