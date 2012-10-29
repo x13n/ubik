@@ -1,6 +1,7 @@
 #pragma once
 #include <boost/mpl/transform.hpp>
 #include <boost/mpl/int.hpp>
+#include <boost/mpl/remove_if.hpp>
 
 namespace ubik
 {
@@ -34,14 +35,18 @@ namespace mpl = boost::mpl;
 	};
 
 	template<class T>
-	struct var_byte_width
+	struct is_const_sized
 	{
-	private:
-		static unsigned const const_bit_size = const_bit_width<T>::value;
+		typedef mpl::bool_<T::const_sized> type;
+	};
 
-		BOOST_STATIC_ASSERT(0 == const_bit_size%8);
-	public:
-		static unsigned const value = const_bit_size/8 + 0;// TODO: variable size
+	template<class TL>
+	struct get_var_sized
+	{
+		typedef typename mpl::remove_if<
+				TL,
+				is_const_sized<mpl::_1>
+			>::type type;
 	};
 }
 

@@ -14,6 +14,7 @@ protected:
 
 	typedef RT return_type;
 	enum { bit_width = BitWidth };
+	static const bool const_sized = true;
 
 	template<unsigned bit_offset>
 	return_type get(unsigned byte_offset) const

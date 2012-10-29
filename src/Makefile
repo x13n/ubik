@@ -1,4 +1,4 @@
-CCFLAGS=-I../include
+CCFLAGS=-I../include -Wall -g
 
 all: test
 

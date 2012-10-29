@@ -12,6 +12,7 @@ class loop
 {
 public:
 	enum { bit_width = 0 }; // TODO: remove this?
+	static const bool const_sized = false;
 
 	class iterator
 	{
@@ -32,7 +33,7 @@ public:
 
 		void operator++()
 		{
-			m_bytes += byte_var_size();
+			m_bytes += m_contents->get_size();
 			if(m_bytes >= m_bytes_end) {
 				assert(m_bytes == m_bytes_end && "Loop is not aligned!");
 				m_bytes = NULL;
@@ -54,15 +55,6 @@ public:
 		{
 			return *m_contents;
 		}
-
-		unsigned byte_var_size() const
-		{
-			static const unsigned bit_const_size = const_bit_width<T>::value;
-			BOOST_STATIC_ASSERT( 0 == bit_const_size % 8 );
-			static const unsigned const_size = bit_const_size / 8;
-			unsigned var_size = 0; // TODO: implement calculating inner var size
-			return const_size + var_size;
-		}
 	};
 
 	template<class Context>
@@ -77,17 +69,6 @@ public:
 	iterator end() const
 	{
 		return iterator(NULL, NULL);
-	}
-
-	unsigned byte_var_size()
-	{
-		unsigned size = 0;
-		iterator it = begin();
-		while( it != end() ) {
-			size += it->byte_var_size();
-			++it;
-		}
-		return size;
 	}
 };
 
