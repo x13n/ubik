@@ -10,9 +10,9 @@ T convert(From source) // for up to 32/64 bits
 }
 
 template<class T>
-T convert(unsigned char* source, unsigned byte_size) // for more than 32/64 bits
+T convert(const unsigned char* source, unsigned byte_size) // for more than 32/64 bits
 {
-	T t(source, byte_size);
+	T t(source, source+byte_size);
 	return t;
 }
 
