@@ -21,24 +21,25 @@ public:
 
 		const unsigned char* m_bytes;
 		const unsigned char* m_bytes_end;
-		boost::shared_ptr<const contents_type> m_contents;
+		contents_type m_contents;
 
 	public:
 		iterator(const unsigned char* bytes, const unsigned char* bytes_end)
 			: m_bytes(bytes)
 			, m_bytes_end(bytes_end)
-			, m_contents(new contents_type(bytes))
+			, m_contents(bytes)
 		{
 		}
 
 		void operator++()
 		{
-			m_bytes += m_contents->get_size();
+			m_bytes += m_contents.get_size();
 			if(m_bytes >= m_bytes_end) {
 				assert(m_bytes == m_bytes_end && "Loop is not aligned!");
 				m_bytes = NULL;
 			}
-			m_contents.reset(new contents_type(m_bytes)); // TODO: avoid reallocation
+			new (&m_contents) contents_type(m_bytes); // initialize underlying content with m_bytes
+			// looks kinda bizarre, but avoids moving set_bits to public interface
 		}
 
 		bool operator!=(const iterator& rhs)
@@ -48,12 +49,12 @@ public:
 
 		const contents_type* operator->() const
 		{
-			return m_contents.get();
+			return &m_contents;
 		}
 
 		const contents_type& operator*() const
 		{
-			return *m_contents;
+			return m_contents;
 		}
 	};
 
