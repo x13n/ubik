@@ -1,6 +1,6 @@
 UBIK: Unobtrusive BIt parsing Kit
 
-C++ template-based library, allowing easy access to bit data, in a fast and typesafe manner.
+C++ template-based library, allowing easy access to binary data, in a fast and typesafe manner.
 
 Aim is to provide means to parse data such as network packets, MPEG descriptors or certain binary files.
 
