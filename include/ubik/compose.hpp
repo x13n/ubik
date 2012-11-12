@@ -8,9 +8,6 @@
 #include <boost/mpl/for_each.hpp>
 #include <ubik/bit_width.hpp>
 
-#include <iostream>
-using namespace std;
-
 namespace ubik
 {
 namespace mpl = boost::mpl;
